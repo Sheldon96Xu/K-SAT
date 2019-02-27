@@ -19,23 +19,18 @@ KSAT::KSAT(int m, int n, int k): nCls(m), nVar(n), K(k), walksatFixes(0), moserF
     for (int i = 0; i < m; i++) {
         vector<int> clause;
         set<int> varIndices;
-        for (int s = 0; s < k;) {
+        for (int s = 0; s < k; ++s) {
             int r = rand() % n;
-            if (varIndices.find(r) == varIndices.end()) {
-                varIndices.insert(r);
-                if (rand() % 2) { //random negation
-                    clause.push_back(r+1);
-                }
-                else {
-                    clause.push_back(-r-1);
-                }
-                literals[r].push_back(i);
-                ++s;
+            varIndices.insert(r);
+            if (rand() % 2) { //random negation
+                clause.push_back(r+1);
             }
+            else {
+                clause.push_back(-r-1);
+            }
+            literals[r].push_back(i);
         }
-        //varIndicesAll.push_back(varIndices);
         clauses.push_back(clause);
-        
     }
     for (int i = 0; i < nCls; i++) { //generate dependancies
         vector<int> neighbours;
