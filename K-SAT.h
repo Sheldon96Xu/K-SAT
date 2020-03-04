@@ -12,37 +12,28 @@
 #include <string>
 #include <vector>
 #include <stack>
-#include <set>
+#include <unordered_set>
 #include <unordered_map>
 using namespace std;
 
 class KSAT
 {
-    int nCls, nVar, K, walksatFixes, moserFixes;
-    vector<bool> walksatResult, moserResult;
+    bool showRes;
+    int nVar, nCls, K, flips, flipLimit;
+    double prob;
     vector<vector<int>> clauses;
     unordered_map<int, vector<int>> literals; //where each literal is located, by clause
-    vector<vector<int>> dependancies; //map of each clause and its dependent neighbours
-    stack<int> walkSATStack;
-    stack<int> moserStack;
+    vector<int> T, falseClauses, numSatisfied; //number of satisfied literals each clause
 public:
-    KSAT(int m, int n, int k);
+    KSAT(int n, int m, int k, double p, int l, bool show);
     
-    void printLiterals();
+    int solve();
     
-    void printClauses();
-    
-    void printAnswer(vector<bool> &result);
-    
-    bool Violated(int c, vector<bool> &result);
-    
-    int findFirstViolation(vector<int> &clauses, vector<bool> &result);
-    
-    void fixOne(int m); //flip a random variable in clause m
+    void randomCNF();
+            
+    void setFalseClauses();
         
-    void fixAll(int m);//randomly flip all truth values for variables in clause m
+    void flip(int x);
     
-    int WalkSAT();
-    
-    int Moser();
+    void chooseFlip(vector<int>&C);
 };
